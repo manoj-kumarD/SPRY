@@ -64,8 +64,8 @@ import { Task } from '../../models/task.model';
     .field {
       display: flex;
       flex-direction: column;
-      flex: 1 1 0;            /* 🔑 allow inputs to shrink */
-      min-width: 0;           /* 🔑 critical for flex shrink */
+      flex: 1 1 0;           
+      min-width: 0;          
     }
 
     input, select {
@@ -74,7 +74,7 @@ import { Task } from '../../models/task.model';
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 14px;
-      width: 100%;            /* 🔑 fill available space */
+      width: 100%;          
     }
 
     .error {
@@ -93,7 +93,7 @@ import { Task } from '../../models/task.model';
       font-weight: bold;
       cursor: pointer;
       white-space: nowrap;
-      flex-shrink: 0;         /* 🔑 button never shrinks */
+      flex-shrink: 0;        
     }
 
     .add-btn:disabled {
@@ -117,14 +117,14 @@ import { Task } from '../../models/task.model';
 })
 export class TaskForm {
 
-  form;                 // 👈 declare only
+  form;             
   editId: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService
   ) {
-    // 👇 initialize INSIDE constructor
+    
     this.form = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -140,7 +140,7 @@ export class TaskForm {
 
   submit() {
     if (this.form.invalid) {
-      this.form.markAllAsTouched(); // 👈 IMPORTANT
+      this.form.markAllAsTouched(); 
       return;
     }
 
