@@ -27,6 +27,24 @@ import { Task } from '../../models/task.model';
           <option value="desc">Due Date ↓</option>
         </select>
       </div>
+
+      
+      <div class="control">
+        <label>Order</label>
+        <select (change)="order = $any($event.target).value">
+          <option value="asc">Ascending ↑</option>
+          <option value="desc">Descending ↓</option>
+        </select>
+      </div>
+
+     <div class="control">
+      <label>Sort</label>
+      <select (change)="order = $any($event.target).value">
+      <option value="asc">A → Z</option>
+      <option value="desc">Z → A</option>
+      </select>
+    </div>
+
     </div>
 
     <!-- TASK LIST -->
@@ -146,6 +164,7 @@ export class TaskCard {
       list = list.filter(t => t.status === this.filter);
     }
     list.sort((a, b) =>
+      
       this.order === 'asc'
         ? a.dueDate.localeCompare(b.dueDate)
         : b.dueDate.localeCompare(a.dueDate)
