@@ -37,11 +37,12 @@ import { Task } from '../../models/task.model';
         </select>
       </div>
 
-     <div class="control">
-      <label>Sort</label>
-      <select (change)="order = $any($event.target).value">
-      <option value="asc">A → Z</option>
-      <option value="desc">Z → A</option>
+      <div class="control">
+      <label>Sort by Title</label>
+      <select (change)="titleOrder = $any($event.target).value">
+        <option value="none">None</option>
+        <option value="asc">A → Z</option>
+        <option value="desc">Z → A</option>
       </select>
     </div>
 
@@ -153,24 +154,55 @@ export class TaskCard {
   tasks: Task[] = [];
   filter: 'All' | Task['status'] = 'All';
   order: 'asc' | 'desc' = 'asc';
+  // dateOrder: 'asc' | 'desc' = 'asc';
+titleOrder: 'none' | 'asc' | 'desc' = 'none';
+
 
   constructor(private service: TaskService) {
     this.service.tasks$.subscribe(t => this.tasks = t);
   }
 
-  get visible() {
-    let list = [...this.tasks];
-    if (this.filter !== 'All') {
-      list = list.filter(t => t.status === this.filter);
-    }
-    list.sort((a, b) =>
+  // get visible() {
+  //   let list = [...this.tasks];
+  //   if (this.filter !== 'All') {
+  //     list = list.filter(t => t.status === this.filter);
+  //   }
+  //   list.sort((a, b) =>
       
-      this.order === 'asc'
-        ? a.dueDate.localeCompare(b.dueDate)
-        : b.dueDate.localeCompare(a.dueDate)
-    );
-    return list;
+  //     this.order === 'asc'
+  //       ? a.dueDate.localeCompare(b.dueDate)
+  //       : b.dueDate.localeCompare(a.dueDate)
+  //   );
+  //   return list;
+  // }
+
+
+  get visible() {
+
+  let list = [...this.tasks];
+
+  // STATUS FILTER
+  if (this.filter !== 'All') {
+    list = list.filter(t => t.status === this.filter);
   }
+
+  // DATE SORT
+  list.sort((a, b) =>
+    this.order === 'asc'
+      ? a.dueDate.localeCompare(b.dueDate)
+      : b.dueDate.localeCompare(a.dueDate)
+  );
+
+  // TITLE SORT (applied only if selected)
+  if (this.titleOrder !== 'none') {
+    list.sort((a, b) => {
+      const result = a.title.localeCompare(b.title);
+      return this.titleOrder === 'asc' ? result : -result;
+    });
+  }
+
+  return list;
+}
 
   delete(id: string) {
     this.service.deleteTask(id);
